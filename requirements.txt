@@ -1,0 +1,9 @@
+plotly
+pytorch
+wandb
+pytorch-lightning
+jaxtyping
+einops
+git+https://github.com/callummcdougall/CircuitsVis.git#subdirectory=python
+transformer_lens
+protobuf==3.20.*
