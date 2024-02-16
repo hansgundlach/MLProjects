@@ -209,7 +209,7 @@ def model_emb(model, inputs_embeds, word_embeddings, output_len):
     input_logits = None
     for i in range(output_len):
         model_out = model(inputs_embeds=embs, return_dict=True)
-
+        print("model_out", model_out.logits.shape)
         if i == 0:
             input_logits = model_out.logits[:, :-1]
 

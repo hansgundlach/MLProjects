@@ -1,6 +1,6 @@
 plotly
-pytorch
 wandb
+transformers
 pytorch-lightning
 jaxtyping
 einops

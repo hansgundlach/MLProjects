@@ -1,6 +1,4 @@
 # %%
-
-
 from simplehelp import *
 import torch
 from matplotlib import pyplot as plt
@@ -27,16 +25,23 @@ else:
     device = torch.device("cpu")
 
 # %%
-from transformers import GPT2Tokenizer, GPT2Model
+# GPT-2 model and tokenizer
+from transformers import GPT2Tokenizer
 
 # Load pre-trained GPT-2 tokenizer
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-model = GPT2Model.from_pretrained("gpt2")
+
+# %%
+from transformers import GPT2LMHeadModel
+
+model = GPT2LMHeadModel.from_pretrained("gpt2")
+
+
 # embeddings = model.transformer.wte.weight.detach()
 embeddings = model.get_input_embeddings().weight.detach()
 model.to(device)
 embeddings.to(device)
-
+# %%
 
 # %%
 target_output = " world"
@@ -72,7 +77,6 @@ def optimise_input(
     num_clusters = batch_size * input_len
     _, centroids = kkmeans(word_embeddings.detach(), num_clusters)
 
-    #
     start_input = centroids.reshape(batch_size, input_len, -1)
 
     input = torch.nn.Parameter(start_input.to(device), requires_grad=True)
@@ -81,6 +85,8 @@ def optimise_input(
     for e in range(epochs):
         norm_input = input / torch.sqrt(torch.sum(input**2, dim=-1, keepdim=True))
         logits, emb, perp = model_emb(model, norm_input, word_embeddings, output_len)
+        print("testing model_emb", logits.shape, emb.shape, perp.shape)
+
         probs = torch.softmax(logits, dim=-1)
         perp_loss = perp.mean()
 
@@ -125,6 +131,10 @@ def optimise_input(
 
 # %%
 optimise_input(model, embeddings, tokenizer, device)
-# specify modle and run
+# spe
+
+# %%
+model_emb(model, inputs_embeds, word_embeddings, output_len)
+
 
 # %%
